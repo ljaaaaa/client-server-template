@@ -1,5 +1,3 @@
-package lilja.networking;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -15,11 +13,16 @@ public class Server {
 
 	public static void main(String[] args) throws IOException{
 		ServerSocket listener = new ServerSocket(1234);		
-		
+	
+		//Constantly listen for clients until program terminates	
 		while (true) {
 			System.out.println("Server: Waiting for client connection...");
-			Socket client = listener.accept();
+			Socket client = listener.accept(); 
+
+			//Client found once listener accepts client
 			System.out.println("Server: Found a client!");
+
+			//Create thread for handling specific client. Client name is given by number
 			ClientHandler clientThread = new ClientHandler("Client: " + clients.size(), client, clients);
 
 			//Add new clientThread to clients
