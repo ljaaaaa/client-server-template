@@ -43,7 +43,8 @@ public class Client {
 
 		} catch (IOException e) {
 			System.out.println("An IOException Occured!");
-			System.out.println("Check: Is the server running? Are your HOST and PORT variables correct?");
+			System.out.println("Check: Is the server running? Are your HOST and PORT variables correct?\n");
+			System.exit(1);
 		}
 
 		//Initialize readers and writers
@@ -58,7 +59,7 @@ public class Client {
 		sendMessage(name);
 
 		System.out.println("\nYou should now be connected to the server. Feel free to\n" +
-							"start messaging now. Message \"exit\" to close the connection.\n");
+							"start messaging now. Press Ctrl+C to close the connection.\n");
 
 		//Start listening to other clients
 		Thread inputThread = getInputThread();
@@ -66,7 +67,6 @@ public class Client {
 
 		//Listen for messages to send
 		while (true) {
-			System.out.print("\nYou: ");
 			String msgToSend = scanner.nextLine();
 
 			//Close connection

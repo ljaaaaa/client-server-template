@@ -42,30 +42,32 @@ public class ClientHandler implements Runnable {
 			//Get message from client
 			try {
 				msgFromClient = br.readLine();
+				numMessages++;
 
 			} catch (IOException e) {
 				e.printStackTrace();
+				break;
 			}
-			numMessages++;
 
 			//If first message, set username to whatever is sent from client,
 			//alongside notifying everyone about new user
 			if (numMessages == 1){
 				name = msgFromClient;
-				System.out.println(name + " entered the chat!");
-				outToAll(name + " entered the chat!");
+				outToAll("I entered the chat!");
 			
 			//If not first message, just send messages as normal
 			} else {
 				//Print out output from client
 				System.out.println(name + ": " + msgFromClient);
 
-				//Gives out output to all clients
-				outToAll(msgFromClient);
-
-				//Exit loop if message is exit
-				if (msgFromClient.equalsIgnoreCase("exit")){
+				//Exit loop if connection closed
+				if (msgFromClient == null){
+					outToAll("I left the chat!");
 					break;
+				
+				//Gives out output to all clients
+				} else {
+					outToAll(msgFromClient);
 				}
 			} 
 		}
@@ -85,6 +87,9 @@ public class ClientHandler implements Runnable {
 	 * @param msg Message to send
 	 */
 	private void outToAll(String msg){
+		//Print on Server side
+		System.out.println(name + ": " + msg);
+
 		for (int x = 0; x < handlersClients.size(); x++) {
 			
 			//Won't send message to itself
