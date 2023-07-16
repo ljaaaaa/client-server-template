@@ -3,8 +3,14 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 
+/**
+ * Server Class
+ * A class to represent a server
+ * Creates threads for new clients and gives each client a client handler
+ */
 public class Server {
 
+	//List of all clients
 	private static ArrayList<ClientHandler> clients = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException{

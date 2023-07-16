@@ -5,8 +5,12 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.Scanner;
 
+/**
+ * Client Class
+ * A class that represent a client
+ * All client side communication is done here
+ */
 public class Client {
-	
 	public static Socket socket;
 	public static BufferedReader br;
 	public static BufferedWriter bw;
@@ -33,9 +37,8 @@ public class Client {
 						while (true) {
 							System.out.println(br.readLine());
 						}
-					}
-					
-					catch (Exception e) {
+
+					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				}
@@ -54,13 +57,13 @@ public class Client {
 					break;
 				}
 			}
-		}
+
+			scanner.close();
 		
-		catch (Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
-		}
 		
-		finally {
+		} finally {
 			try {
 				if (socket != null) {
 					socket.close();
