@@ -14,15 +14,20 @@ public class Server {
 	private static ArrayList<ClientHandler> clients = new ArrayList<>();
 
 	public static void main(String[] args) throws IOException{
+		System.out.println("╔═════════════════════════════╗");
+		System.out.println("║     Server has started...   ║");
+		System.out.println("╚═════════════════════════════╝");
+		System.out.println();
+
 		ServerSocket listener = new ServerSocket(1234);		
 	
 		//Constantly listen for clients until program terminates	
 		while (true) {
-			System.out.println("Server: Waiting for client connection...");
+			System.out.println("Server: Waiting for client connection... + \n");
 			Socket client = listener.accept(); 
 
 			//Client found once listener accepts client
-			System.out.println("Server: Found a client!");
+			System.out.println("Server: Found a client! + \n");
 
 			//Create thread for handling specific client. Client name is given by number
 			ClientHandler clientThread = new ClientHandler("Client: " + clients.size(), client, clients);

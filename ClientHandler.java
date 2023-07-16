@@ -57,9 +57,6 @@ public class ClientHandler implements Runnable {
 			
 			//If not first message, just send messages as normal
 			} else {
-				//Print out output from client
-				System.out.println(name + ": " + msgFromClient);
-
 				//Exit loop if connection closed
 				if (msgFromClient == null){
 					outToAll("I left the chat!");
@@ -88,7 +85,7 @@ public class ClientHandler implements Runnable {
 	 */
 	private void outToAll(String msg){
 		//Print on Server side
-		System.out.println(name + ": " + msg);
+		System.out.println(name + ": " + msg + "\n");
 
 		for (int x = 0; x < handlersClients.size(); x++) {
 			

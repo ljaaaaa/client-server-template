@@ -33,7 +33,10 @@ public class Client {
 
 	public Client(){
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("\nWelcome to Client Class!\n");
+		System.out.println("╔═════════════════════════════╗");
+		System.out.println("║  Welcome to being a Client! ║")
+		System.out.println("╚═════════════════════════════╝");
+		System.out.println();
 
 		//Initialize socket and streams
 		try {
@@ -47,13 +50,13 @@ public class Client {
 			System.exit(1);
 		}
 
+		//Get username from user
+		System.out.print("Enter your name: ");
+		name = scanner.nextLine();
+
 		//Initialize readers and writers
 		br = new BufferedReader(new InputStreamReader(inStream));
 		bw = new BufferedWriter(new OutputStreamWriter(outStream));
-
-		//Get username from user
-		System.out.print("\nEnter your name: ");
-		name = scanner.nextLine();
 
 		//Send username to clienthandler to process
 		sendMessage(name);
@@ -68,18 +71,11 @@ public class Client {
 		//Listen for messages to send
 		while (true) {
 			String msgToSend = scanner.nextLine();
-
-			//Close connection
-			if(msgToSend.equalsIgnoreCase("exit")){
-				break;
-			}
+			System.out.println();
 			
 			//Send message
 			sendMessage(msgToSend);
 		}
-
-		//Close scanner
-		scanner.close();
 	}
 
 	/**
@@ -107,7 +103,17 @@ public class Client {
 			public void run() {
 				while (true) {
 					try {
-						System.out.println(br.readLine());
+						String text = br.readLine();
+						//If server has been shut down, input will be null
+						if (text == null){
+							System.out.println("It appears the server has shut down!");
+							System.exit(1);
+
+						//Otherwise print input normally
+						} else {
+							System.out.println(text);
+							System.out.println();
+						}
 					} catch (IOException e) {
 						e.printStackTrace();
 					}
