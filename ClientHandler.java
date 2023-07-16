@@ -20,6 +20,8 @@ public class ClientHandler implements Runnable {
 	public Thread thread;
 	public String name;
 
+	private int numMessages = 0;
+
 	public ClientHandler(String name, Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
 		//Initializes global variables
 		this.client = clientSocket;
@@ -31,12 +33,30 @@ public class ClientHandler implements Runnable {
 	}
 
 	@Override
-	public void run() {
-		try {		
-			while (true) {
-				//Listen to input from client
-				String msgFromClient = br.readLine();
+	public void run() {		
+		//Loop continuously
+		while (true) {
+			//Listen to input from client
+			String msgFromClient = null;
 
+			//Get message from client
+			try {
+				msgFromClient = br.readLine();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			numMessages++;
+
+			//If first message, set username to whatever is sent from client,
+			//alongside notifying everyone about new user
+			if (numMessages == 1){
+				name = msgFromClient;
+				System.out.println(name + " entered the chat!");
+				outToAll(name + " entered the chat!");
+			
+			//If not first message, just send messages as normal
+			} else {
 				//Print out output from client
 				System.out.println(name + ": " + msgFromClient);
 
@@ -47,15 +67,15 @@ public class ClientHandler implements Runnable {
 				if (msgFromClient.equalsIgnoreCase("exit")){
 					break;
 				}
-			}
+			} 
+		}
 
-			//Close things
+		//Close things
+		try {
 			client.close();
 			br.close();
 			bw.close();
-		}
-
-		catch (Exception e) {
+		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -63,16 +83,19 @@ public class ClientHandler implements Runnable {
 	/**
 	 * Send a message out to all clients
 	 * @param msg Message to send
-	 * @throws IOException may be thrown
 	 */
-	private void outToAll(String msg) throws IOException{
+	private void outToAll(String msg){
 		for (int x = 0; x < handlersClients.size(); x++) {
 			
 			//Won't send message to itself
 			if (handlersClients.get(x).name != name) {
-				handlersClients.get(x).bw.write(name + ": " + msg);
-				handlersClients.get(x).bw.newLine();
-				handlersClients.get(x).bw.flush();	
+				try {
+					handlersClients.get(x).bw.write(name + ": " + msg);
+					handlersClients.get(x).bw.newLine();
+					handlersClients.get(x).bw.flush();
+				} catch (IOException e) {
+					
+				}	
 			}
 		}
 	}

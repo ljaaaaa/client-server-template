@@ -33,7 +33,7 @@ public class Client {
 
 	public Client(){
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("Welcome to Client-Server-Template!");
+		System.out.println("\nWelcome to Client Class!\n");
 
 		//Initialize socket and streams
 		try {
@@ -51,11 +51,14 @@ public class Client {
 		bw = new BufferedWriter(new OutputStreamWriter(outStream));
 
 		//Get username from user
-		System.out.print("Enter your name: ");
+		System.out.print("\nEnter your name: ");
 		name = scanner.nextLine();
 
-		System.out.println("You should now be connected to the server. Feel free to\n" +
-							"start messaging now. Message \"exit\" to close the connection.");
+		//Send username to clienthandler to process
+		sendMessage(name);
+
+		System.out.println("\nYou should now be connected to the server. Feel free to\n" +
+							"start messaging now. Message \"exit\" to close the connection.\n");
 
 		//Start listening to other clients
 		Thread inputThread = getInputThread();
@@ -63,27 +66,35 @@ public class Client {
 
 		//Listen for messages to send
 		while (true) {
-			System.out.print("You: ");
+			System.out.print("\nYou: ");
 			String msgToSend = scanner.nextLine();
 
-			//Send message
-			try {
-				bw.write(msgToSend);
-				bw.newLine();
-				bw.flush();
-			} catch (IOException e) {
-				System.out.println("An IOException Occured!");
-				System.out.println("An issue occured when writing your message");
-			}
-
 			//Close connection
-			if (msgToSend.equalsIgnoreCase("exit")) {
+			if(msgToSend.equalsIgnoreCase("exit")){
 				break;
 			}
+			
+			//Send message
+			sendMessage(msgToSend);
 		}
 
 		//Close scanner
 		scanner.close();
+	}
+
+	/**
+	 * Send a message to the server (via ClientHandler) which passes message
+	 * to every other client
+	 * @param msgToSend the message to send
+	 */
+	public void sendMessage(String msgToSend){
+		try {
+			bw.write(msgToSend);
+			bw.newLine();
+			bw.flush();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -94,13 +105,12 @@ public class Client {
 		Runnable running = new Runnable() {
 			@Override
 			public void run() {
-				try {
-					while (true) {
+				while (true) {
+					try {
 						System.out.println(br.readLine());
+					} catch (IOException e) {
+						e.printStackTrace();
 					}
-
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 		};
