@@ -16,14 +16,13 @@ public class ClientHandler implements Runnable {
 	private BufferedReader br;
 	private BufferedWriter bw;
 	
-	public ArrayList<ClientHandler> handlersClients;
-	public Thread thread;
-	public String name;
+	private ArrayList<ClientHandler> handlersClients;
+	private Thread thread;
+	private String name;
 
 	private int numMessages = 0;
 
 	public ClientHandler(String name, Socket clientSocket, ArrayList<ClientHandler> clients) throws IOException {
-		//Initializes global variables
 		this.client = clientSocket;
 		this.handlersClients = clients;
 		this.name = name;
@@ -100,5 +99,21 @@ public class ClientHandler implements Runnable {
 				}	
 			}
 		}
+	}
+
+	/**
+	 * Starts the thread that is this
+	 */
+	public void startThread(){
+		if (thread != null){
+			thread.start();
+		}
+	}
+
+	/**
+	 * Updates current clients list
+	 */
+	public void setClients(ArrayList<ClientHandler> clients){
+		this.handlersClients = clients;
 	}
 }

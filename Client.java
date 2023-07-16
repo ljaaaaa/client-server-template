@@ -19,13 +19,13 @@ public class Client {
 	private OutputStream outStream;
 	private InputStream inStream;
 
-	public BufferedReader br;
-	public BufferedWriter bw;
+	private BufferedReader br;
+	private BufferedWriter bw;
 
-	public String name;
+	private String name;
 
-	public final int PORT = 1234;
-	public final String HOST = "localhost";
+	private final int PORT = 1234;
+	private final String HOST = "localhost";
 
 	public static void main(String[] args) {
 		new Client();
@@ -33,9 +33,9 @@ public class Client {
 
 	public Client(){
 		Scanner scanner = new Scanner(System.in);
-		System.out.println("╔═════════════════════════════╗");
-		System.out.println("║  Welcome to being a Client! ║")
-		System.out.println("╚═════════════════════════════╝");
+		System.out.println("╔════════════════════════════╗");
+		System.out.println("║      You are a Client      ║");
+		System.out.println("╚════════════════════════════╝");
 		System.out.println();
 
 		//Initialize socket and streams
@@ -61,9 +61,12 @@ public class Client {
 		//Send username to clienthandler to process
 		sendMessage(name);
 
-		System.out.println("\nYou should now be connected to the server. Feel free to\n" +
-							"start messaging now. Press Ctrl+C to close the connection.\n");
-
+		System.out.println();
+		System.out.println("╔════════════════════════════════════════════════════════════════════╗");
+		System.out.println("║ You can start messaging now, press Ctrl+C to close the connection. ║");
+		System.out.println("╚════════════════════════════════════════════════════════════════════╝");
+		System.out.println();
+		
 		//Start listening to other clients
 		Thread inputThread = getInputThread();
 		inputThread.start();
@@ -106,7 +109,9 @@ public class Client {
 						String text = br.readLine();
 						//If server has been shut down, input will be null
 						if (text == null){
-							System.out.println("It appears the server has shut down!");
+							System.out.println("╔════════════════════════════════════════════════════╗");
+							System.out.println("║ It appears the server has been shut down... sorry. ║");
+							System.out.println("╚════════════════════════════════════════════════════╝");
 							System.exit(1);
 
 						//Otherwise print input normally

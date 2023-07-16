@@ -23,7 +23,7 @@ public class Server {
 	
 		//Constantly listen for clients until program terminates	
 		while (true) {
-			System.out.println("Server: Waiting for client connection... + \n");
+			System.out.println("Server: Waiting for client connection...\n");
 			Socket client = listener.accept(); 
 
 			//Client found once listener accepts client
@@ -37,10 +37,10 @@ public class Server {
 
 			//Gives clientHandlers the new client list
 			for (int x = 0; x < clients.size(); x++) {
-				clients.get(x).handlersClients = clients;
+				clients.get(x).setClients(clients);
 			}
 
-			clientThread.thread.start();	
+			clientThread.startThread();	
 		}
 		 
 	}
